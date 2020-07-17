@@ -5,7 +5,7 @@ This code is based on an early version of [Cysu/open-reid](https://github.com/Cy
 
 ## Demonstration
 
-<img src="https://https://github.com/automan000/Camera-based-Person-ReID/blob/master/demonstration.jpg" width="623" height="300">
+<img src="https://raw.githubusercontent.com/automan000/Camera-based-Person-ReID/master/demonstration.jpg" width="623" height="300">
 
 ## Details
 
