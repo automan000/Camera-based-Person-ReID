@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import torch
 
 
-def get_our_optimizer_strategy(opt, optim_policy=None):
+def get_optimizer_strategy(opt, optim_policy=None):
     optimizer = torch.optim.SGD(
         optim_policy, lr=1e-2, weight_decay=5e-4, momentum=0.9
     )

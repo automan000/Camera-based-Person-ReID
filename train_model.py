@@ -19,7 +19,7 @@ from config import opt
 from io_stream import data_manager, NormalCollateFn, IdentitySampler
 
 from frameworks.models import ResNetBuilder
-from frameworks.training import CameraClsTrainer, get_our_optimizer_strategy, CamDataParallel
+from frameworks.training import CameraClsTrainer, get_optimizer_strategy, CamDataParallel
 
 from utils.serialization import Logger, save_checkpoint
 from utils.transforms import TrainTransform
@@ -76,7 +76,7 @@ def train(**kwargs):
         return identity_loss
 
     # get trainer and evaluator
-    optimizer, adjust_lr = get_our_optimizer_strategy(opt, optim_policy)
+    optimizer, adjust_lr = get_optimizer_strategy(opt, optim_policy)
     reid_trainer = CameraClsTrainer(opt, model, optimizer, standard_cls_criterion, summary_writer)
 
     print('Start training')

@@ -5,7 +5,7 @@ This code is based on an early version of [Cysu/open-reid](https://github.com/Cy
 
 ## Demonstration
 
-<img src="https://github.com/automan000/Camera-based-Person-ReID/blob/final_eval/demonstration.jpg" width="623" height="300">
+<img src="https://https://github.com/automan000/Camera-based-Person-ReID/blob/master/demonstration.jpg" width="623" height="300">
 
 ## Details
 
@@ -32,8 +32,8 @@ Then, we simply set the network to the **Eval** mode and process images from thi
 
 **Second:** during training, we need a process of re-organizing mini-batches.
 With a tensor sampled by an arbitrary sampler, we split this tensor by the corresponding camera IDs and re-organize them as a list of tensors.
-It is achieved by our customized [Trainer](https://https://github.com/automan000/Camera-based-Person-ReID/blob/master/frameworks/training/trainer.py).
-Then, our [DataParallel](https://https://github.com/automan000/Camera-based-Person-ReID/blob/master/frameworks/training/data_parallel.py) forwards these tensors one by one, assembles all outputs, and then feeds them to the loss function in the same way of the conventional DataParallel.
+It is achieved by our customized [Trainer](https://github.com/automan000/Camera-based-Person-ReID/blob/master/frameworks/training/trainer.py).
+Then, our [DataParallel](https://github.com/automan000/Camera-based-Person-ReID/blob/master/frameworks/training/data_parallel.py) forwards these tensors one by one, assembles all outputs, and then feeds them to the loss function in the same way of the conventional DataParallel.
 
 
 
