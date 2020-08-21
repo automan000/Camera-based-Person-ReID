@@ -16,8 +16,10 @@ To this end, we make two major changes.
 **First:** we avoid customizing the BatchNorm layer. Otherwise, the forward process will require additional input for identifying camera IDs.
 Given that the **nn.Sequential** module is widely used in PyTorch, a customized BatchNorm layer will lead to massive changes in the network definition.
 Instead, we turn to use the official BatchNorm layer.
-For the training process, considering that the BatchNorm layer always uses the batch statistics, we can simply use the official BatchNorm implementation and feed the network with images from the same camera.
-For the testing process, we first change the definition of BatchNorm layers from:
+For the training process, we can simply use the official BatchNorm implementation and feed the network with images from the same camera.
+In this stage, the collected *running_mean* and *running_var* are directly ignored since they will always be overridden in the testing stage.
+Thus, the BN parameter *momentum* can be set to any value.
+For the testing process, we change the default definition of BatchNorm layers from:
 ```python
 nn.BatchNorm2d(planes, momentum=0.1)
 ```
