@@ -27,6 +27,15 @@ to:
 ```python
 nn.BatchNorm2d(planes, momentum=None)
 ```
+
+**Note:**
+
+**In PyTorch,**
+**Momentum=None is not equivalent to Momentum=0.0.
+It calculates the cumulative moving average.
+Please check https://pytorch.org/docs/stable/generated/torch.nn.BatchNorm2d.html for more details.**
+
+
 Then, given several mini-batches from a specific camera, we simply set the network to the **Train** mode and forward all these mini-batches.
 After forwarding all these batches, the *running_mean* and *running_var* in each BatchNorm layer are the statistics for this exact camera.
 Then, we simply set the network to the **Eval** mode and process images from this specific camera.
@@ -115,9 +124,11 @@ You can download our trained models via [Google Drive](https://drive.google.com/
 
 If you use our code in your paper, please kindly use the following BibTeX entry.
 
+```console
 @inproceedings{zhuang2020rethinking,
   title={Rethinking the Distribution Gap of Person Re-identification with Camera-based Batch Normalization},
   author={Zhuang, Zijie and Wei, Longhui and Xie, Lingxi and Zhang, Tianyu and Zhang, Hengheng and Wu, Haozhe and Ai, Haizhou and Tian, Qi},
   booktitle={ECCV},
   year={2020}
 }
+```
