@@ -26,7 +26,10 @@ def test(**kwargs):
     opt._parse(kwargs)
     sys.stdout = Logger(
         os.path.join("./pytorch-ckpt/current", opt.save_dir, 'log_test_{}.txt'.format(opt.testset_name)))
+
+    torch.backends.cudnn.deterministic = True  # I think this line may slow down the testing process
     torch.manual_seed(opt.seed)
+    torch.cuda.manual_seed(opt.seed)
     random.seed(opt.seed)
     np.random.seed(opt.seed)
 
@@ -58,7 +61,8 @@ def test(**kwargs):
             data_for_camera_loader = DataLoader(
                 data_manager.init_datafolder(opt.testset_name, camera_samples, TestTransform(opt.height, opt.width)),
                 batch_size=opt.test_batch, num_workers=opt.workers,
-                pin_memory=False, drop_last=True
+                pin_memory=False, drop_last=True,
+                opt.seed
             )
             reid_evaluator.collect_sim_bn_info(data_for_camera_loader)
 
@@ -66,7 +70,8 @@ def test(**kwargs):
             data_loader = DataLoader(
                 data_manager.init_datafolder(opt.testset_name, camera_data, TestTransform(opt.height, opt.width)),
                 batch_size=opt.test_batch, num_workers=opt.workers,
-                pin_memory=pin_memory, shuffle=False
+                pin_memory=pin_memory, shuffle=False,
+                opt.seed
             )
             fs, pids, camids = reid_evaluator.produce_features(data_loader, normalize=True)
             all_features.append(fs)

@@ -30,8 +30,8 @@ from torch.nn.parallel import DistributedDataParallel
 
 def train(**kwargs):
     opt._parse(kwargs)
-    # torch.backends.cudnn.deterministic = True  # I think this line may slow down the training process
     # set random seed and cudnn benchmark
+    torch.backends.cudnn.deterministic = True  # I think this line may slow down the training process
     torch.manual_seed(opt.seed)
     random.seed(opt.seed)
     np.random.seed(opt.seed)
@@ -55,7 +55,8 @@ def train(**kwargs):
         data_manager.init_datafolder(opt.trainset_name, train_dataset.train, TrainTransform(opt.height, opt.width)),
         sampler=IdentitySampler(train_dataset.train, opt.train_batch, opt.num_instances),
         batch_size=opt.train_batch, num_workers=opt.workers,
-        pin_memory=pin_memory, drop_last=True, collate_fn=NormalCollateFn()
+        pin_memory=pin_memory, drop_last=True, collate_fn=NormalCollateFn(),
+        worker_init_fn=np.random.seed(opt.seed)
     )
     print('initializing model ...')
     model = ResNetBuilder(train_dataset.num_train_pids)
