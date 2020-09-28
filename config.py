@@ -13,7 +13,7 @@ class DefaultConfig(object):
     height = 256
     width = 128
     # sampler
-    workers = 8
+    workers = 16
     num_instances = 4
     # default optimization params
     train_batch = 64

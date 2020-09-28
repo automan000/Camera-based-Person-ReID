@@ -21,9 +21,12 @@ from io_stream import data_manager, NormalCollateFn, IdentitySampler
 from frameworks.models import ResNetBuilder
 from frameworks.training import CameraClsTrainer, get_optimizer_strategy, CamDataParallel
 
+from utils.centerloss import CenterLoss
 from utils.serialization import Logger, save_checkpoint
 from utils.transforms import TrainTransform
 
+
+from torch.nn.parallel import DistributedDataParallel
 
 def train(**kwargs):
     opt._parse(kwargs)
@@ -63,16 +66,23 @@ def train(**kwargs):
     if use_gpu:
         model = CamDataParallel(model).cuda()
 
-    xent = nn.CrossEntropyLoss()
+
+    # center loss
+    xent = CenterLoss(num_classes=train_dataset.num_train_pids, feat_dim=model.module.classifier.in_features, use_gpu=True).cuda()
+    cent_param_group = filter(lambda p: p.requires_grad, xent.parameters())
+    optim_policy.append({'params': cent_param_group, "weight_decay": 0.0005})
+
+    # xent = nn.CrossEntropyLoss()
 
     def standard_cls_criterion(preditions,
+                               logits,
                                targets,
                                global_step,
                                summary_writer):
-        identity_loss = xent(preditions, targets)
-        identity_accuracy = torch.mean((torch.argmax(preditions, dim=1) == targets).float())
+        identity_loss = xent(preditions, targets) * 0.0005
+        # identity_accuracy = torch.mean((torch.argmax(preditions, dim=1) == targets).float())
         summary_writer.add_scalar('cls_loss', identity_loss.item(), global_step)
-        summary_writer.add_scalar('cls_accuracy', identity_accuracy.item(), global_step)
+        # summary_writer.add_scalar('cls_accuracy', identity_accuracy.item(), global_step)
         return identity_loss
 
     # get trainer and evaluator

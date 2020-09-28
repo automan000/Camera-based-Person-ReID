@@ -63,7 +63,7 @@ class CameraClsTrainer(BaseTrainer):
 
             feat, id_scores = self._forward(self.data)
             pids = torch.cat(self.pids, dim=0)
-            self.loss = self.criterion(id_scores, pids, self.global_step,
+            self.loss = self.criterion(feat, id_scores, pids, self.global_step,
                                        self.summary_writer)
             self.optimizer.zero_grad()
             self._backward()
