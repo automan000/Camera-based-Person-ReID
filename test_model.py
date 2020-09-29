@@ -62,7 +62,6 @@ def test(**kwargs):
                 data_manager.init_datafolder(opt.testset_name, camera_samples, TestTransform(opt.height, opt.width)),
                 batch_size=opt.test_batch, num_workers=opt.workers,
                 pin_memory=False, drop_last=True,
-                opt.seed
             )
             reid_evaluator.collect_sim_bn_info(data_for_camera_loader)
 
@@ -71,7 +70,6 @@ def test(**kwargs):
                 data_manager.init_datafolder(opt.testset_name, camera_data, TestTransform(opt.height, opt.width)),
                 batch_size=opt.test_batch, num_workers=opt.workers,
                 pin_memory=pin_memory, shuffle=False,
-                opt.seed
             )
             fs, pids, camids = reid_evaluator.produce_features(data_loader, normalize=True)
             all_features.append(fs)

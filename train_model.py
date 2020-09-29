@@ -67,12 +67,10 @@ def train(**kwargs):
     if use_gpu:
         model = CamDataParallel(model).cuda()
 
-
     # center loss
-    xent = CenterLoss(num_classes=train_dataset.num_train_pids, feat_dim=model.module.classifier.in_features, use_gpu=True).cuda()
-    cent_param_group = filter(lambda p: p.requires_grad, xent.parameters())
-    optim_policy.append({'params': cent_param_group, "weight_decay": 0.0005})
-
+    cent = CenterLoss(num_classes=train_dataset.num_train_pids, feat_dim=model.module.classifier.in_features, use_gpu=True).cuda()
+    # cent_param_group = filter(lambda p: p.requires_grad, xent.parameters())
+    # optim_policy.append({'params': cent_param_group, "weight_decay": 0.0005})
     # xent = nn.CrossEntropyLoss()
 
     def standard_cls_criterion(preditions,
@@ -80,7 +78,7 @@ def train(**kwargs):
                                targets,
                                global_step,
                                summary_writer):
-        identity_loss = xent(preditions, targets) * 0.0005
+        identity_loss = cent(preditions, targets) * 0.001
         # identity_accuracy = torch.mean((torch.argmax(preditions, dim=1) == targets).float())
         summary_writer.add_scalar('cls_loss', identity_loss.item(), global_step)
         # summary_writer.add_scalar('cls_accuracy', identity_accuracy.item(), global_step)
@@ -88,7 +86,9 @@ def train(**kwargs):
 
     # get trainer and evaluator
     optimizer, adjust_lr = get_optimizer_strategy(opt, optim_policy)
-    reid_trainer = CameraClsTrainer(opt, model, optimizer, standard_cls_criterion, summary_writer)
+    optimizer_cent = torch.optim.SGD(cent.parameters(), lr=0.5)
+
+    reid_trainer = CameraClsTrainer(opt, model, optimizer, optimizer_cent, standard_cls_criterion, summary_writer)
 
     print('Start training')
     for epoch in range(opt.max_epoch):

@@ -10,8 +10,9 @@ import time
 
 
 class CameraClsTrainer(BaseTrainer):
-    def __init__(self, opt, model, optimizer, criterion, summary_writer):
+    def __init__(self, opt, model, optimizer, optimizer_cent, criterion, summary_writer):
         super().__init__(opt, model, optimizer, criterion, summary_writer)
+        self.optimizer_cent = optimizer_cent
 
     def _parse_data(self, inputs):
         imgs, pids, camids = inputs
@@ -66,8 +67,12 @@ class CameraClsTrainer(BaseTrainer):
             self.loss = self.criterion(feat, id_scores, pids, self.global_step,
                                        self.summary_writer)
             self.optimizer.zero_grad()
+            self.optimizer_cent.zero_grad()
+
             self._backward()
+
             self.optimizer.step()
+            self.optimizer_cent.step()
 
             torch.cuda.synchronize()
             batch_time.update(time.time() - tic)
