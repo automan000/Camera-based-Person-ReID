@@ -19,7 +19,12 @@ class DefaultConfig(object):
     train_batch = 64
     test_batch = 64
     max_epoch = 60
-    decay_epoch = 40
+    model_decay_epoch = 40
+
+    # center loss parameteres
+    center_loss_alpha = 0.001
+    center_base_lr = 1e-2
+    center_decay_epoch = 40
     # estimate bn statistics
     batch_num_bn_estimatation = 50
     # io
