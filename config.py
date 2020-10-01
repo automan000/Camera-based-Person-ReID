@@ -9,7 +9,7 @@ class DefaultConfig(object):
     seed = 0
     # dataset options
     trainset_name = 'market'
-    testset_name = 'duke'
+    testset_name = 'market'
     height = 256
     width = 128
     # sampler

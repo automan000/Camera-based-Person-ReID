@@ -86,7 +86,7 @@ def train(**kwargs):
 
     # get trainer and evaluator
     optimizer, adjust_lr = get_model_optimizer_strategy(opt, optim_policy)
-    optimizer_cent = torch.optim.SGD(cent.parameters(), lr=0.5)
+    optimizer_cent = torch.optim.SGD(cent.parameters(), lr=opt.center_base_lr)
 
     reid_trainer = CameraClsTrainer(opt, model, optimizer, optimizer_cent, standard_cls_criterion, summary_writer)
 
