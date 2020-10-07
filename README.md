@@ -115,6 +115,9 @@ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0 \
 python test_model.py test --testset_name market --save_dir='market_demo'
 ```
 
+To reproduce our reported performance, each experiment should be conducted 10 times.
+
+
 ## Trained Models
 
 You can download our trained models via [Google Drive](https://drive.google.com/drive/folders/1oxO6W9VAReKx2QrJNesN2X-O6mNOVsEd?usp=sharing).
