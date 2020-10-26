@@ -129,9 +129,11 @@ If you use our code in your paper, please kindly use the following BibTeX entry.
 
 ```console
 @inproceedings{zhuang2020rethinking,
-  title={Rethinking the Distribution Gap of Person Re-identification with Camera-based Batch Normalization},
+  title={Rethinking the Distribution Gap of Person Re-identification with Camera-Based Batch Normalization},
   author={Zhuang, Zijie and Wei, Longhui and Xie, Lingxi and Zhang, Tianyu and Zhang, Hengheng and Wu, Haozhe and Ai, Haizhou and Tian, Qi},
-  booktitle={ECCV},
-  year={2020}
+  booktitle={European Conference on Computer Vision},
+  pages={140--157},
+  year={2020},
+  organization={Springer}
 }
 ```
